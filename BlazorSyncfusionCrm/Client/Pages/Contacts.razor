@@ -24,6 +24,10 @@
 	</GridColumns>
 </SfGrid>
 
+<p>
+	<SfButton IsPrimary="true" Content="Create New Contact" OnClick="CreateContact"/>
+</p>
+
 @code {
 	public List<Contact> GridData { get; set; } = new List<Contact>();
 
@@ -39,5 +43,10 @@
 	void EditContact(int id)
 	{
 		NavigationManager.NavigateTo($"contacts/edit/{id}");
+	}
+
+	void CreateContact()
+	{
+		NavigationManager.NavigateTo("contacts/new");
 	}
 }
