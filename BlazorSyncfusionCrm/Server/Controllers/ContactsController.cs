@@ -36,5 +36,36 @@ namespace BlazorSyncfusionCrm.Server.Controllers
             }
             return result;
 		}
+
+		[HttpPost]
+		public async Task<ActionResult<Contact>> CreateContact(Contact contact)
+		{
+			_context.Contacts.Add(contact);
+            await _context.SaveChangesAsync();
+
+            return Ok(contact);
+		}
+
+		[HttpPut("{id}")]
+		public async Task<ActionResult<Contact>> UpdateContactById(int id, Contact contact)
+		{
+			var dbContact = await _context.Contacts.FindAsync(id);
+
+			if (dbContact is null)
+			{
+				return NotFound("Contact not found");
+			}
+
+			dbContact.FirstName = contact.FirstName;
+			dbContact.LastName = contact.LastName;
+			dbContact.NickName = contact.NickName;
+			dbContact.Place = contact.Place;
+			dbContact.DateOfBirth = contact.DateOfBirth;
+			dbContact.DateUpdated = DateTime.Now;
+
+			await _context.SaveChangesAsync();
+
+			return dbContact;
+		}
 	}
 }

@@ -45,17 +45,34 @@ else
 				{
 					contact = jsonResult;
 				}
-				else
-				{
-					NavigationManager.NavigateTo("/contacts/new");
-				}
+			} 
+			else
+			{
+				NavigationManager.NavigateTo("/contacts/new");
 			}
-
 		}
 	}
 
 	async Task HandleSubmit()
 	{
-		
+		HttpResponseMessage result;
+
+		if (Id is not null)
+		{
+			result = await Http.PutAsJsonAsync($"api/contacts/{contact.Id}", contact);
+		}
+		else
+		{
+			result = await Http.PostAsJsonAsync($"api/contacts", contact);
+		}
+
+		if (result.IsSuccessStatusCode)
+		{
+			var jsonResult = await result.Content.ReadFromJsonAsync<Contact>();
+			if (jsonResult is not null)
+			{
+				contact = jsonResult;
+			}
+		}
 	}
 }
