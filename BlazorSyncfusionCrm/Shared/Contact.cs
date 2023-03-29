@@ -16,7 +16,7 @@ namespace BlazorSyncfusionCrm.Shared
 		[Required]
 		public string NickName { get; set; } = string.Empty;
 		public string Place { get; set; } = string.Empty;
-		public bool isDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 		public DateTime? DateOfBirth { get; set; }
 		public DateTime DateCreated { get; set; } = DateTime.Now;
 		public DateTime? DateUpdated { get; set; }

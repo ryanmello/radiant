@@ -21,7 +21,7 @@ namespace BlazorSyncfusionCrm.Server.Controllers
         public async Task<ActionResult<List<Contact>>> GetAllContacts()
         {
             return await _context.Contacts
-                .Where(c => !c.isDeleted)
+                .Where(c => !c.IsDeleted)
                 .ToListAsync();
         }
 
@@ -29,7 +29,6 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 		public async Task<ActionResult<Contact>> GetContactById(int id)
 		{
             var result = await _context.Contacts.FindAsync(id);
-
             if (result is null)
             {
                 return NotFound("Contact not found");
@@ -50,7 +49,6 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 		public async Task<ActionResult<Contact>> UpdateContactById(int id, Contact contact)
 		{
 			var dbContact = await _context.Contacts.FindAsync(id);
-
 			if (dbContact is null)
 			{
 				return NotFound("Contact not found");
@@ -66,6 +64,21 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 			await _context.SaveChangesAsync();
 
 			return dbContact;
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<List<Contact>>> DeleteContactById(int id)
+		{
+			var dbContact = await _context.Contacts.FindAsync(id);
+			if (dbContact is null)
+			{
+				return NotFound("Contact not found");
+			}
+
+			dbContact.IsDeleted = true;
+			dbContact.DateDeleted = DateTime.Now;
+			await _context.SaveChangesAsync();
+			return await GetAllContacts();
 		}
 	}
 }
