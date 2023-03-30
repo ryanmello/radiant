@@ -7,6 +7,7 @@
 
 <p>Are you sure you want to delete @contact.FirstName @contact.LastName?</p>
 <SfButton Content="Delete Contact" IconCss="e-icons e-close" CssClass="e-danger" OnClick="@(() => ConfirmDeleteContact(contact))"></SfButton>
+<SfButton Content="Cancel" IsPrimary="true" OnClick="NavigateBackToContacts"></SfButton>
 <p>
 	<SfMessage Severity="MessageSeverity.Success" Visible="showDeleteMessage">Contact deleted successfully</SfMessage>
 </p>
@@ -45,5 +46,10 @@
 
 		var result = await Http.DeleteAsync($"api/contacts/{contactToDelete.Id}");
 		showDeleteMessage = true;
+	}
+
+	void NavigateBackToContacts()
+	{
+		NavigationManager.NavigateTo("/contacts");
 	}
 }
