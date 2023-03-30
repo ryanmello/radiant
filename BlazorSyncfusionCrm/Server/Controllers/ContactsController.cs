@@ -1,5 +1,6 @@
 ﻿using BlazorSyncfusionCrm.Server.Data;
 using BlazorSyncfusionCrm.Shared;
+using GoogleMaps.LocationServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,7 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Contact>> CreateContact(Contact contact)
 		{
+			SetLatLong(contact);
 			_context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
@@ -60,6 +62,7 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 			dbContact.Place = contact.Place;
 			dbContact.DateOfBirth = contact.DateOfBirth;
 			dbContact.DateUpdated = DateTime.Now;
+			SetLatLong(dbContact);
 
 			await _context.SaveChangesAsync();
 
@@ -81,6 +84,22 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 			return await GetAllContacts();
 		}
 
-		//AIzaSyB3mONvrU3xNc1_vQRZreINua-yfIGg-yg
+		MapPoint? GetLatLong(Contact contact)
+		{
+			//AIzaSyB3mONvrU3xNc1_vQRZreINua-yfIGg-yg
+			var gls = new GoogleLocationService("AIzaSyB3mONvrU3xNc1_vQRZreINua-yfIGg-yg");
+			var latLong = gls.GetLatLongFromAddress(contact.Place);
+			return latLong;
+		}
+
+		void SetLatLong(Contact contact)
+		{
+			var latLong = GetLatLong(contact);
+			if (latLong is not null)
+			{
+				contact.Latitude = latLong.Latitude;
+				contact.Longitude = latLong.Longitude;
+			}
+		}
 	}
 }
