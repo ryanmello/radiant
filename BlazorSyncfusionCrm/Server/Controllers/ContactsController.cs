@@ -84,6 +84,14 @@ namespace BlazorSyncfusionCrm.Server.Controllers
 			return await GetAllContacts();
 		}
 
+		[HttpGet("map")]
+		public async Task<ActionResult<List<Contact>>> GetMapContacts(int id)
+		{
+			return await _context.Contacts
+			   .Where(c => !c.IsDeleted && c.Latitude != null && c.Latitude != null)
+			   .ToListAsync();
+		}
+
 		MapPoint? GetLatLong(Contact contact)
 		{
 			//AIzaSyB3mONvrU3xNc1_vQRZreINua-yfIGg-yg
