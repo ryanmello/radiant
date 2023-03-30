@@ -13,7 +13,7 @@
 			<CardFooterContent>
 				@if (note.Contact is not null)
 				{
-					<SfButton Content=@($"Show {note.Contact.NickName}") IsPrimary="true" OnClick="(() => NavigateToContact(note.Contact.Id))"></SfButton>
+					<SfButton Content=@($"Show {note.Contact.FirstName} {note.Contact.LastName}") IsPrimary="true" OnClick="(() => NavigateToContact(note.Contact.Id))"></SfButton>
 				}
 			</CardFooterContent>
 		</CardFooter>
@@ -36,5 +36,4 @@
 	{
 		NavigationManager.NavigateTo($"contacts/edit/{contactId}");
 	}
-
 }

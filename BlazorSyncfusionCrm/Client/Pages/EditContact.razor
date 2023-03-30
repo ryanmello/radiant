@@ -6,7 +6,7 @@
 
 @if (Id is not null)
 {
-	<h3>Edit @contact.NickName</h3>
+	<h3>Edit @contact.FirstName @contact.LastName</h3>
 }
 else
 {
@@ -18,8 +18,6 @@ else
 		<DataAnnotationsValidator />
 		<SfTextBox CssClass="e-outline" Placeholder="First Name" FloatLabelType="@FloatLabelType.Auto" @bind-Value="contact.FirstName" />
 		<SfTextBox CssClass="e-outline" Placeholder="Last Name" FloatLabelType="@FloatLabelType.Auto" @bind-Value="contact.LastName" />
-		<SfTextBox CssClass="e-outline" Placeholder="NickName" FloatLabelType="@FloatLabelType.Auto" @bind-Value="contact.NickName" />
-		<ValidationMessage For="(() => contact.NickName)"/>
 		<SfTextBox CssClass="e-outline" Placeholder="Place" FloatLabelType="@FloatLabelType.Auto" @bind-Value="contact.Place" />
 		<SfDatePicker TValue="DateTime?" Placeholder="Date Of Birth" FloatLabelType="@FloatLabelType.Auto" @bind-Value="contact.DateOfBirth" Format="mm/dd/yyyy"></SfDatePicker>
 		<hr />

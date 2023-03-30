@@ -1,0 +1,49 @@
+﻿@page "/contacts/delete/{id:int}"
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Delete Contact</h3>
+
+<p>Are you sure you want to delete @contact.FirstName @contact.LastName?</p>
+<SfButton Content="Delete Contact" IconCss="e-icons e-close" CssClass="e-danger" OnClick="@(() => ConfirmDeleteContact(contact))"></SfButton>
+<p>
+	<SfMessage Severity="MessageSeverity.Success" Visible="showDeleteMessage">Contact deleted successfully</SfMessage>
+</p>
+
+@code {
+	[Parameter]
+	public int? Id { get; set; }
+
+	public Contact contact { get; set; } = new Contact();
+	Contact? contactToDelete;
+	bool showDeleteMessage = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (Id is not null)
+		{
+			var result = await Http.GetAsync($"api/contacts/{Id}");
+			if (result.IsSuccessStatusCode)
+			{
+				var jsonResult = await result.Content.ReadFromJsonAsync<Contact>();
+				if (jsonResult is not null)
+				{
+					contact = jsonResult;
+				}
+			}
+		}
+	}
+
+	async Task ConfirmDeleteContact(Contact contact)
+	{
+		contactToDelete = contact;
+		if (contactToDelete is null)
+		{
+			return;
+		}
+
+		var result = await Http.DeleteAsync($"api/contacts/{contactToDelete.Id}");
+		showDeleteMessage = true;
+	}
+}
